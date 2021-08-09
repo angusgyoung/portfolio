@@ -1,2 +1,36 @@
+$font-family-sans-serif: "Open Sans";
+$font-family-monospace: "Roboto Mono";
+$font-family-base: $font-family-sans-serif !default;
+
+$font-size-base: 1.2rem !default;
+$font-size-lg: $font-size-base * 1.25 !default;
+$font-size-sm: $font-size-base * .875 !default;
+
+$border-width:                1px !default;
+
+$border-radius:               0 !default;
+$border-radius-lg:            0 !default;
+$border-radius-sm:            0 !default;
+
+$dark-blue: #020126;
+$navy: #042159;
+$yellow: #F2E422;
+$orange: #F28A2E;
+$red: #F23827;
+
+// $primary:      
+// $secondary:    
+// $success:      
+$info: $yellow;        
+$warning: $orange;
+$danger: $red;      
+// $light:        
+$dark: $dark-blue;
+
+body {
+    background-color: $dark-blue !important;
+    color: white !important;
+}
+
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
 @import 'node_modules/bootstrap-vue/src/index.scss';
