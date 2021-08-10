@@ -17,16 +17,16 @@
           Take a look at some of my projects. 
         </p>
         <div>
-          <b-button class="mr-2" variant="outline-primary">Projects</b-button>
-          <b-button class="mr-2" variant="outline-primary">Gists</b-button>
+          <b-button class="mr-2" variant="outline-info">Projects</b-button>
+          <b-button class="mr-2" variant="outline-info">Gists</b-button>
         </div>
       </b-col>
     </b-row>
     <b-row align-h="center" align-v="end" class="fixed-bottom">
       <b-col>
         <div class="d-flex justify-content-center">
-          <b-icon class="h2 m-3" icon="github" variant="secondary"/>
-          <b-icon class="h2 m-3" icon="linkedin" variant="secondary"/>
+          <b-icon class="h2 m-3" icon="github" variant="primary"/>
+          <b-icon class="h2 m-3" icon="linkedin" variant="primary"/>
         </div>
       </b-col>
     </b-row>
