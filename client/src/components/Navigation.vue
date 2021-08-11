@@ -3,7 +3,6 @@
         <b-nav-item to="/" active>Home</b-nav-item>
         <b-nav-item to="/projects">Projects</b-nav-item>
         <b-nav-item>Resume</b-nav-item>
-        <b-nav-item>Gists</b-nav-item>
     </b-nav>
 </template>
 

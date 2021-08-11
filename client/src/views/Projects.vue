@@ -5,10 +5,10 @@
     </div>
     <div v-else>
         <h2>Pinned</h2>
-        <repository class="mb-3" v-for="repo in userData.pinnedItems.nodes" :key="repo.url" :repository="repo"/>
+        <repository class="mb-3" v-for="repo in pinned" :key="repo.url" :repository="repo"/>
 
         <h2>Recent</h2>
-        <repository class="mb-3" v-for="repo in userData.repositoriesContributedTo.nodes" :key="repo.url" :repository="repo"/>
+        <repository class="mb-3" v-for="repo in recent" :key="repo.url" :repository="repo"/>
     </div>
 </b-container>
 </template>
@@ -16,7 +16,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import Repository from '../components/Repository.vue'
-import { getUserDetails } from '../services/github'
+import { getProjects } from '../services/github'
 
 @Component({
     components: {
@@ -25,12 +25,15 @@ import { getUserDetails } from '../services/github'
 })
 export default class Projects extends Vue {
 
-    private userData = {}
+    private projects
+    private pinned
+    private recent
     private loading = true
 
     async created() {
-        this.userData = await getUserDetails()
-        console.log(this.userData)
+        this.projects = await getProjects()
+        this.pinned = this.projects.pinnedItems.nodes
+        this.recent = this.projects.repositoriesContributedTo.nodes
         this.loading = false
     }
 }

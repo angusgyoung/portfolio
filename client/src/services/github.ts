@@ -2,21 +2,40 @@ import axios, { AxiosInstance } from 'axios';
 
 const instance: AxiosInstance = axios.create()
 
-const query = `
+const userQuery = `
 {
     user(login: "angusgyoung") {
+        name
+        login
         avatarUrl
         bio
         company
         isHireable
-        
-        organizations(first: 4) {
+        url
+
+        organizations(first: 6) {
             nodes {
                 avatarUrl
                 login
                 name
+                url
             }
         }
+        
+        publicKeys(first: 1) {
+            nodes {
+                createdAt
+                fingerprint
+                key
+            }
+        }
+      }
+  }  
+`
+
+const projectQuery = `
+{
+    user(login: "angusgyoung") {
         repositoriesContributedTo(first: 6) {
             nodes {
                 name
@@ -48,13 +67,6 @@ const query = `
                         color
                     }
                 }
-            }
-        }
-        publicKeys(first: 1) {
-            nodes {
-                createdAt
-                fingerprint
-                key
             }
         }
         pinnedItems(first: 6, types: REPOSITORY) {
@@ -93,9 +105,18 @@ const query = `
           }
       }
     }
-}`
+  }  
+`
 
-export async function getUserDetails(): Promise<Record<string, any>> {
+export async function getUser(): Promise<Record<string, any>> {
+    return request(userQuery)
+}
+
+export async function getProjects(): Promise<Record<string, any>> {
+    return request(projectQuery)
+}
+
+async function request(query: string): Promise<Record<string, any>> {
     try {
         const response = await instance({
             url: "https://api.github.com/graphql",
@@ -110,6 +131,7 @@ export async function getUserDetails(): Promise<Record<string, any>> {
         })
         const data = await response.data
 
+        console.log(data.data.user)
         return data.data.user
     } catch (error) {
         console.log(error)
