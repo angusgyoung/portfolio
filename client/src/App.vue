@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <navigation/>
-    <router-view/>
+    <navigation />
+    <router-view />
   </div>
 </template>
 
@@ -17,5 +17,4 @@ import Navigation from './components/Navigation.vue'
 export default class App extends Vue {}
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

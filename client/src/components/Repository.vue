@@ -1,47 +1,67 @@
 <template>
-    <b-card
+  <b-card
     :title="repository.name"
     :sub-title="repository.primaryLanguage.name"
-    class="repository-card">
+    class="repository-card"
+  >
     <b-card-text>
       {{ repository.description }}
     </b-card-text>
-        <b-row>
-            <div v-if="topics && topics.length" >
-                <b-col>
-                    <b-badge class="mr-2" v-for="topic in topics" :key="topic.name" pill variant="primary">{{ topic.topic.name }}</b-badge>
-                </b-col>
-            </div>
-            <div v-if="languages && languages.length">
-                <b-col>
-                    <b-badge class="mr-2" v-for="language in languages" :key="language.name" pill :style="'background-color: ' + language.color">{{ language.name }}</b-badge>
-                </b-col>
-            </div>
-            <b-col> 
-                <b-button class="btn-sm float-right" :href="repository.url" variant="outline-info">View on Github <b-icon icon="github"/></b-button>
-            </b-col>
-        </b-row>
+    <b-row>
+      <div v-if="topics && topics.length">
+        <b-col>
+          <b-badge
+            class="mr-2"
+            v-for="topic in topics"
+            :key="topic.name"
+            pill
+            variant="primary"
+            >{{ topic.topic.name }}</b-badge
+          >
+        </b-col>
+      </div>
+      <div v-if="languages && languages.length">
+        <b-col>
+          <b-badge
+            class="mr-2"
+            v-for="language in languages"
+            :key="language.name"
+            pill
+            :style="'background-color: ' + language.color"
+            >{{ language.name }}</b-badge
+          >
+        </b-col>
+      </div>
+      <b-col>
+        <b-button
+          class="btn-sm float-right"
+          :href="repository.url"
+          variant="outline-info"
+          >View on Github <b-icon icon="github"
+        /></b-button>
+      </b-col>
+    </b-row>
   </b-card>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Topic, Language, Repository as Repo } from '../types'
 
 @Component({
-    components: {}
+  components: {}
 })
 export default class Repository extends Vue {
-    
-    @Prop({ default: {} })
-    repository!: Record<string, any>
+  @Prop({ default: {} })
+  repo!: Repo
 
-    private topics;
-    private languages;
+  private topics!: Topic[]
+  private languages!: Language[]
 
-    created() {
-        this.topics = this.repository.repositoryTopics.nodes
-        this.languages = this.repository.languages.nodes
-    }
+  created(): void {
+    this.topics = this.repo.repositoryTopics.nodes
+    this.languages = this.repo.languages.nodes
+  }
 }
 </script>
 
@@ -49,6 +69,6 @@ export default class Repository extends Vue {
 @import '../main.scss';
 
 .repository-card {
-    background-color: $navy;
+  background-color: $navy;
 }
 </style>
