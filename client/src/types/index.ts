@@ -67,6 +67,10 @@ export interface PinnedItems {
   nodes: Repository[]
 }
 
+export interface Repositories {
+  nodes: Repository[]
+}
+
 export interface User {
   name: string
   login: string
@@ -77,7 +81,7 @@ export interface User {
   url: string
   organizations: Organizations
   publicKeys: PublicKeys
-  repositoriesContributedTo: Repository[]
+  repositoriesContributedTo: Repositories
   pinnedItems: PinnedItems
 }
 

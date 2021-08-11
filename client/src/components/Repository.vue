@@ -1,11 +1,11 @@
 <template>
   <b-card
-    :title="repository.name"
-    :sub-title="repository.primaryLanguage.name"
+    :title="repo.name"
+    :sub-title="repo.primaryLanguage.name"
     class="repository-card"
   >
     <b-card-text>
-      {{ repository.description }}
+      {{ repo.description }}
     </b-card-text>
     <b-row>
       <div v-if="topics && topics.length">
@@ -35,7 +35,7 @@
       <b-col>
         <b-button
           class="btn-sm float-right"
-          :href="repository.url"
+          :href="repo.url"
           variant="outline-info"
           >View on Github <b-icon icon="github"
         /></b-button>

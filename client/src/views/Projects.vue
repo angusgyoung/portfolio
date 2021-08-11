@@ -14,7 +14,7 @@
         class="mb-3"
         v-for="repo in pinned"
         :key="repo.url"
-        :repository="repo"
+        :repo="repo"
       />
 
       <h2>Recent</h2>
@@ -22,7 +22,7 @@
         class="mb-3"
         v-for="repo in recent"
         :key="repo.url"
-        :repository="repo"
+        :repo="repo"
       />
     </div>
   </b-container>
@@ -47,7 +47,7 @@ export default class Projects extends Vue {
   async created(): Promise<void> {
     const user = await getProjects()
     this.pinned = user.pinnedItems.nodes
-    this.recent = user.repositoriesContributedTo
+    this.recent = user.repositoriesContributedTo.nodes
     this.loading = false
   }
 }

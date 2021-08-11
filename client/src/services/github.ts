@@ -132,7 +132,6 @@ async function request(query: string): Promise<User> {
     })
     const data = await response.data
 
-    console.log(data.data.user)
     return data.data.user
   } catch (error) {
     console.log(error)
