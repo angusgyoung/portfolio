@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+
+  portfolio-service-devcontainer:
+    build: .
+    command: "/bin/bash"
+    stdin_open: true
+    tty: true
+    env_file: devcontainer.env
+    volumes: 
+      - "${PWD}:/workspace"
+    networks:
+      - internal
+
+  portfolio-cache:
+    image: docker.io/redis:6-alpine
+    networks:
+      - internal
+
+networks:
+  internal:
