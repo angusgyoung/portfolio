@@ -2,12 +2,12 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/machinebox/graphql"
+	log "github.com/sirupsen/logrus"
 )
 
 var apiUrl = os.Getenv("GITHUB_API_URL")
@@ -28,10 +28,10 @@ func getProfileData(ctx *gin.Context) {
     var response interface{}
     
 	if err := client.Run(context.Background(), request, &response); err != nil {
-        panic(err)
+        log.Fatal(err)
     }
     
-	fmt.Println(response)
+	log.Trace(response)
 	ctx.JSON(http.StatusOK, response)
 }
 
@@ -44,12 +44,15 @@ func getProjectData(ctx *gin.Context) {
         panic(err)
     }
     
-	fmt.Println(response)
+	log.Trace(response)
 	ctx.JSON(http.StatusOK, response)
 }
 
 func createRequest(query string) *graphql.Request {
 	request := graphql.NewRequest(query)
+
+	log.Trace(request)
+
 	request.Header.Add("Authorization", "Bearer " + apiToken)
 
 	return request
