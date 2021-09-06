@@ -11,7 +11,6 @@ import (
 type applicationError struct {
 	Code int `json:"code"`
 	Message string `json:"message"`
-	// Error error `json:"error"`
 }
 
 func (e *applicationError) Error() string {
@@ -34,9 +33,9 @@ func applicationErrorHandler(errType gin.ErrorType) gin.HandlerFunc {
 
 			var parsedError *applicationError
             
-			switch err.(type) {
+			switch err := err.(type) {
             case *applicationError:
-                parsedError = err.(*applicationError)
+                parsedError = err
             default:
                 parsedError = &applicationError{ 
                   Code: http.StatusInternalServerError,
