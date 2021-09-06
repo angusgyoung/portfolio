@@ -13,31 +13,28 @@ var apiToken = os.Getenv("GITHUB_API_TOKEN")
 
 var client graphql.Client = *graphql.NewClient(apiUrl)
 
-func GetProfileData() interface{} {
+func GetProfileData() (interface{}, error) {
     request := createRequest(userDataQuery)
-
-    var response interface{}
-    
-	if err := client.Run(context.Background(), request, &response); err != nil {
-        log.Fatal(err)
-    }
-    
-	log.Trace(response)
-
-	return response
+	return executeRequest(*request)
 }
 
-func GetProjectData() interface{} {
+func GetProjectData() (interface{}, error) {
     request := createRequest(projectDataQuery)
+	return executeRequest(*request)
+}
 
-    var response interface{}
+func executeRequest(request graphql.Request) (interface{}, error) {
+	var response interface{}
     
-	if err := client.Run(context.Background(), request, &response); err != nil {
-        panic(err)
+	err := client.Run(context.Background(), &request, &response)
+
+	if err != nil {
+        log.WithError(err).Error("Failed to perform github request")
+		return nil, err
     }
     
 	log.Trace(response)
-	return response
+	return response, nil
 }
 
 func createRequest(query string) *graphql.Request {
