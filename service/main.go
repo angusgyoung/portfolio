@@ -3,12 +3,13 @@ package main
 import (
 	"flag"
 
-	"github.com/angusgyoung/portfolio-service/internal"
+	"github.com/angusgyoung/portfolio-service/internal/api"
+	"github.com/angusgyoung/portfolio-service/internal/cache"
 	log "github.com/sirupsen/logrus"
 )
 
 func main() {
-	logLevel := flag.String("logLevel", "warn", "interal logging level")
+	logLevel := flag.String("l", "warn", "internal logging level")
     flag.Parse()
 
 	level, err := log.ParseLevel(*logLevel)
@@ -19,5 +20,8 @@ func main() {
 
 	log.SetLevel(level)
 
-	internal.Init()	
+	log.Trace("Initialising cache")
+	cache.Init()
+	log.Trace("Initialising API")
+	api.Init()	
 }

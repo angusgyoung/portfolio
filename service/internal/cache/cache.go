@@ -1,4 +1,4 @@
-package internal
+package cache
 
 import (
 	"context"
@@ -8,11 +8,9 @@ import (
 	"strconv"
 	"time"
 
-	log "github.com/sirupsen/logrus"
-
-	"github.com/angusgyoung/portfolio-service/internal/github"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
+	log "github.com/sirupsen/logrus"
 )
 
 var ctx = context.Background()
@@ -23,7 +21,6 @@ var CACHE_URL = os.Getenv("CACHE_URL")
 var CACHE_TIMEOUT = os.Getenv("CACHE_TIMEOUT")
 
 func Init() {
-	
 	cacheUrl := "localhost:6379"
 	if CACHE_URL != "" {
 		cacheUrl = CACHE_URL
@@ -43,36 +40,11 @@ func Init() {
 		DialTimeout: toSecondDuration(cacheTimeout),
 		WriteTimeout: toSecondDuration(cacheTimeout),
 		ReadTimeout: toSecondDuration(cacheTimeout),
+		OnConnect: onConnect,
 	})
-	
-	router := gin.Default()
-	router.Use(ApplicationErrorHandler())
-	
-	v1 := router.Group("/api/v1")
-	
-	v1.GET("/ping", ping)
-	
-	ghub := v1.Group("/github")
-	
-	ghub.GET("/user", getProfileData)
-	ghub.GET("/projects", getProjectData)	
-	
-	router.Run("localhost:8080")
 }
 
-func ping(c *gin.Context) {
-	c.JSON(http.StatusOK, NewResponse("Available"))
-}
-
-func getProfileData(c *gin.Context) {
-	performCacheableServiceCall(c, github.GetProfileData, "profileData")
-}
-	
-func getProjectData(c *gin.Context) {
-	performCacheableServiceCall(c, github.GetProjectData, "projectData")
-}
-
-func performCacheableServiceCall(c *gin.Context, retrieveCallback func() (interface{}, error), cacheKey string) {
+func PerformCacheableServiceCall(c *gin.Context, retrieveCallback func() (interface{}, error), cacheKey string) {
 	var data interface{}
 
 	log.WithField("cacheKey", cacheKey).Trace("Checking for cached response")
@@ -87,7 +59,7 @@ func performCacheableServiceCall(c *gin.Context, retrieveCallback func() (interf
 			log.WithError(err).Warn("Failed to retrieve value from cache")
 		} else {
 			// There is nothing in the cache for the key
-			log.Debug("Response is not cached, retrieving")
+			log.Debug("Response is not cached")
 		}
 
 		data, err = retrieveCallback()
@@ -119,9 +91,21 @@ func performCacheableServiceCall(c *gin.Context, retrieveCallback func() (interf
 		
 		log.Trace("Executed retrieve callback")
 	} else {
-		log.Debug("Response exists in cache")
+		log.Debug("Returning cached response")
 		json.Unmarshal([]byte(cached), &data)
 	}
 
 	c.JSON(http.StatusOK, data)
+}
+
+func onConnect(ctx context.Context, cn *redis.Conn) error {
+	log.WithFields(log.Fields{
+		"ClientID": cn.ClientID(ctx),
+		"Version": redis.Version(),
+	}).Debug("Connected to redis")
+	return nil
+}
+
+func toSecondDuration(seconds int) time.Duration {
+	return time.Duration(seconds * int(time.Second))
 }
