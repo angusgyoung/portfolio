@@ -2,12 +2,16 @@ version: "3.9"
 
 services:
 
-  portfolio-service-devcontainer:
-    build: .
+  portfolio-devcontainer:
+    build:
+      context: .
+      args:
+        VARIANT: 1.17
+        NODE_VERSION: 14
     command: "/bin/bash"
     stdin_open: true
     tty: true
-    env_file: devcontainer.env
+    env_file: portfolio.env
     volumes: 
       - "${PWD}:/workspace"
     networks:

@@ -1,0 +1,26 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.194.0/containers/go
+{
+	"name": "Portfolio",
+  	"dockerComposeFile": "docker-compose.yml",
+	"service": "portfolio-devcontainer",
+	"workspaceFolder": "/workspace",
+  	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"go.toolsManagement.checkForUpdates": "local",
+		"go.useLanguageServer": true,
+		"go.gopath": "/go",
+		"go.goroot": "/usr/local/go"
+	},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"golang.Go",
+		"dbaeumer.vscode-eslint",
+		"octref.vetur",
+		"esbenp.prettier-vscode"
+	],
+	"remoteUser": "vscode",
+}
