@@ -32,7 +32,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import Repository from '../components/Repository.vue'
 import { Repository as Repo } from '../types'
-import { getProjects } from '../services/github'
+import { getProjects } from '../services/api'
 
 @Component({
   components: {

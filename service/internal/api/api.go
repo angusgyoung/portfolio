@@ -21,8 +21,9 @@ func Init(version string) {
 
 	router := gin.Default()
 	router.Use(ApplicationErrorHandler())
+	router.Use(CORS())
 	
-	v1 := router.Group("/api/v1")
+	v1 := router.Group("/api/v1/pf")
 	
 	v1.GET("/ping", ping)
 	

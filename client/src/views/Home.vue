@@ -66,7 +66,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { User, Organisation } from '../types'
-import { getUser } from '../services/github'
+import { getUser } from '../services/api'
 
 @Component({
   components: {}
@@ -78,12 +78,12 @@ export default class Home extends Vue {
 
   async created(): Promise<void> {
     this.user = await getUser()
+
     this.organisations = this.user.organizations.nodes
     this.loading = false
   }
 
   hireMessage(): string {
-    console.log(this.user)
     if (this.user.isHireable) {
       return 'Available'
     } else return 'Currently employed ' + this.user.company
