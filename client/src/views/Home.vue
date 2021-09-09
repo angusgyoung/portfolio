@@ -13,7 +13,9 @@
         <b-col>
           <h1>{{ user.name }}</h1>
           <h3 class="text-muted">{{ user.login }}</h3>
-          <p :style="'color:' + (user.isHireable ? '#00ff0d' : 'red') + ';'">
+          <p
+            :style="'color:' + (user.isHireable ? '#00ff0d' : '#c637ff') + ';'"
+          >
             {{ hireMessage() }}
           </p>
           <p>
@@ -81,9 +83,10 @@ export default class Home extends Vue {
   }
 
   hireMessage(): string {
+    console.log(this.user)
     if (this.user.isHireable) {
       return 'Available'
-    } else return 'Currently employed at ' + this.user.organizations
+    } else return 'Currently employed ' + this.user.company
   }
 }
 </script>
