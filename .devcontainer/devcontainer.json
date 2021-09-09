@@ -23,4 +23,7 @@
 		"esbenp.prettier-vscode"
 	],
 	"remoteUser": "vscode",
+	"forwardPorts": [
+		8080, 3000
+	]
 }
