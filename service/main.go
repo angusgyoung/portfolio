@@ -8,8 +8,11 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+var Version = "0.0"
+
 func main() {
 	logLevel := flag.String("l", "warn", "internal logging level")
+
     flag.Parse()
 
 	level, err := log.ParseLevel(*logLevel)
@@ -23,5 +26,5 @@ func main() {
 	log.Trace("Initialising cache")
 	cache.Init()
 	log.Trace("Initialising API")
-	api.Init()	
+	api.Init(Version)	
 }
