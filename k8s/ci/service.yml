@@ -32,6 +32,18 @@ spec:
               key: token
         ports:
         - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /api/v1/pf/ping
+            port: 8080
+          failureThreshold: 1
+          periodSeconds: 10
+        startupProbe:
+          httpGet:
+            path: /api/v1/pf/ping
+            port: 8080
+          failureThreshold: 2
+          periodSeconds: 10 
         resources:
           requests:
             cpu: 100m
