@@ -6,7 +6,7 @@ metadata:
   labels:
     app: portfolio-api
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: portfolio-api
@@ -36,16 +36,16 @@ spec:
           httpGet:
             path: /api/v1/pf/ping
             port: 8080
-          failureThreshold: 1
-          periodSeconds: 10
-        startupProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        readinessProbe:
           httpGet:
             path: /api/v1/pf/ping
             port: 8080
-          failureThreshold: 2
-          periodSeconds: 10 
+          initialDelaySeconds: 10
+          periodSeconds: 5
         resources:
           requests:
-            cpu: 50m
+            cpu: 100m
       imagePullSecrets:
       - name: ghcr

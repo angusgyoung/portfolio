@@ -41,7 +41,7 @@ func Init(version string) {
 		}
 	}
 	
-	router.Run(fmt.Sprint("localhost:", apiPort))
+	router.Run(fmt.Sprint(":", apiPort))
 }
 
 func ping(c *gin.Context) {
