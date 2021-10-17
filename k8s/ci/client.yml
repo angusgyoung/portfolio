@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portfolio-client
+  namespace: portfolio
+  labels:
+    app: portfolio-client
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: portfolio-client
+  template:
+    metadata:
+      labels:
+        app: portfolio-client
+    spec:
+      containers:
+      - name: portfolio-client
+        image: ghcr.io/angusgyoung/portfolio-client:imageTag
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 100m
+      imagePullSecrets:
+      - name: ghcr
