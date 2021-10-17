@@ -11,6 +11,7 @@ on:
     branches: ['main']
     paths:
       - 'service/**'
+      - 'k8s/ci/service.yml'      
 
 env:
   REGISTRY: ghcr.io/angusgyoung
