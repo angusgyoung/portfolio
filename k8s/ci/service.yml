@@ -19,6 +19,8 @@ spec:
       - name: portfolio-api-service
         image: ghcr.io/angusgyoung/portfolio-service:imageTag
         env:
+        - name: GIN_MODE
+          value: "release"
         - name: GITHUB_API_URL
           value: "https://api.github.com/graphql"
         - name: CACHE_TTL
