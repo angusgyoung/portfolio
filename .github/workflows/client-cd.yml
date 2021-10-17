@@ -16,7 +16,9 @@ env:
   REGISTRY: ghcr.io/angusgyoung
   IMAGE_NAME: portfolio-client
   K8S_CLUSTER: k8s-1-21-3-do-0-lon1-1634243075945
-  DEPLOYMENT_NAME: "deployment/portfolio-client"
+  DEPLOYMENT_NAME: deployment/portfolio-client
+  DEPLOYMENT_FILE: ci/client.yml
+
 
 jobs:
   build-and-deploy-image:
@@ -60,13 +62,13 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       
       - name: Update deployment file
-        run: TAG=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }} && sed -i 's|imageTag|'${TAG}'|' $GITHUB_WORKSPACE/k8s/client.yml
+        run: TAG=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }} && sed -i 's|imageTag|'${TAG}'|' $GITHUB_WORKSPACE/k8s/${{ env.DEPLOYMENT_FILE }}
       
       - name: Save kubeconfig
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.K8S_CLUSTER }}
       
       - name: Deploy to DigitalOcean Kubernetes
-        run: kubectl apply -f $GITHUB_WORKSPACE/k8s
+        run: kubectl apply -f $GITHUB_WORKSPACE/k8s/${{ env.DEPLOYMENT_FILE }}
 
       - name: Verify deployment
         run: kubectl -n portfolio rollout status ${{ env.DEPLOYMENT_NAME }}

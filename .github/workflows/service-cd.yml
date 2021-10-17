@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build service container image
+name: Build and deploy service container image
 
 on:
   workflow_dispatch:
@@ -14,10 +14,12 @@ on:
 
 env:
   REGISTRY: ghcr.io/angusgyoung
-  IMAGE_NAME: portfolio-service
+  K8S_CLUSTER: k8s-1-21-3-do-0-lon1-1634243075945
+  DEPLOYMENT_NAME: deployment/portfolio-service
+  DEPLOYMENT_FILE: ci/service.yml
 
 jobs:
-  build-and-push-image:
+   build-and-deploy-image:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -49,3 +51,20 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      
+      - name: Update deployment file
+        run: TAG=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }} && sed -i 's|imageTag|'${TAG}'|' $GITHUB_WORKSPACE/k8s/${{ env.DEPLOYMENT_FILE }}
+      
+      - name: Save kubeconfig
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.K8S_CLUSTER }}
+      
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f $GITHUB_WORKSPACE/k8s/${{ env.DEPLOYMENT_FILE }}
+
+      - name: Verify deployment
+        run: kubectl -n portfolio rollout status ${{ env.DEPLOYMENT_NAME }}

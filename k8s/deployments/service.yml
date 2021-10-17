@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: portfolio-api-service
-        image: ghcr.io/angusgyoung/portfolio-service:sha-2dc9598
+        image: ghcr.io/angusgyoung/portfolio-service:imageTag
         env:
         - name: GITHUB_API_URL
           value: "https://api.github.com/graphql"
