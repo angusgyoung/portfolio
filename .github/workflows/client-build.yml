@@ -46,6 +46,8 @@ jobs:
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: client
+          build-args: |
+            VUE_APP_API_URL=https://api.dotwave.io/api/v1/pf
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios'
 import { User } from '@/types'
 
-const API_URL = process.env.API_URL
+const API_URL = process.env.VUE_APP_API_URL
 
 const instance: AxiosInstance = axios.create({
   baseURL: API_URL || 'http://localhost:3000/api/v1/pf'
