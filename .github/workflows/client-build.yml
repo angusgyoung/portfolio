@@ -3,25 +3,22 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build container image
+name: Build client container image
 
 on:
   workflow_dispatch:
   push:
     branches: ['main']
+    paths:
+      - 'client/**'
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: portfolio
+  REGISTRY: ghcr.io/angusgyoung
+  IMAGE_NAME: portfolio-client
 
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        context:
-          - client
-          - service
     permissions:
       contents: read
       packages: write
@@ -41,14 +38,14 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ env.REGISTRY }}/${{ matrix.context }}-${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=sha,enable=true,format=short
+            type=sha,enable=true,suffix=format=short
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: ./${{ matrix.context }}
+          context: client
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
