@@ -15,9 +15,11 @@ on:
 env:
   REGISTRY: ghcr.io/angusgyoung
   IMAGE_NAME: portfolio-client
+  K8S_CLUSTER: k8s-1-21-3-do-0-lon1-1634243075945
+  DEPLOYMENT_NAME: "deployment/portfolio-client"
 
 jobs:
-  build-and-push-image:
+  build-and-deploy-image:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -60,11 +62,11 @@ jobs:
       - name: Update deployment file
         run: TAG=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }} && sed -i 's|imageTag|'${TAG}'|' $GITHUB_WORKSPACE/k8s/client.yml
       
-      - name: Save DigitalOcean kubeconfig with short-lived credentials
-        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 k8s-cluster
+      - name: Save kubeconfig
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.K8S_CLUSTER }}
       
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/k8s
 
       - name: Verify deployment
-        run: kubectl -n portfolio rollout status deployment/portfolio-client
+        run: kubectl -n portfolio rollout status ${{ env.DEPLOYMENT_NAME }}
