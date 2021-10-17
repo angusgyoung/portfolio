@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Provision namespace resources
+name: Update base resources
 
 on:
   workflow_dispatch:
@@ -16,7 +16,7 @@ env:
   K8S_CLUSTER: k8s-1-21-3-do-0-lon1-1634243075945
 
 jobs:
-  apply-base-resources:
+  update-base-resources:
     runs-on: ubuntu-latest
     permissions:
       contents: read

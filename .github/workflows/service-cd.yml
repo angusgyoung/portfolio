@@ -64,7 +64,7 @@ jobs:
       - name: Save kubeconfig
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.K8S_CLUSTER }}
       
-      - name: Deploy to DigitalOcean Kubernetes
+      - name: Deploy to Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/k8s/${{ env.DEPLOYMENT_FILE }}
 
       - name: Verify deployment
