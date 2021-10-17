@@ -17,7 +17,7 @@ env:
   REGISTRY: ghcr.io/angusgyoung
   IMAGE_NAME: portfolio-service
   K8S_CLUSTER: k8s-1-21-3-do-0-lon1-1634243075945
-  DEPLOYMENT_NAME: deployment/portfolio-service
+  DEPLOYMENT_NAME: deployment/portfolio-api
   DEPLOYMENT_FILE: ci/service.yml
 
 jobs:
