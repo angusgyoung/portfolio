@@ -52,7 +52,7 @@ jobs:
         with:
           context: client
           build-args: |
-            VUE_APP_API_URL=https://api.dotwave.io/api/v1/pf
+            VUE_APP_SERVICE_URL=https://api.dotwave.io/api/v1/pf
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
