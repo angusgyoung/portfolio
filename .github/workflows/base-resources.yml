@@ -35,4 +35,4 @@ jobs:
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.K8S_CLUSTER }}
       
       - name: Deploy to DigitalOcean Kubernetes
-        run: kubectl apply -k $GITHUB_WORKSPACE/k8s/resources
+        run: kubectl apply -f $GITHUB_WORKSPACE/k8s/resources
