@@ -24,9 +24,11 @@ spec:
         - name: GITHUB_API_URL
           value: "https://api.github.com/graphql"
         - name: CACHE_TTL
-          value: "120"
+          value: "3600"
         - name: CACHE_TIMEOUT
           value: "2"
+        - name: CORS_ALLOW_ORIGIN
+          value: "https://angus.dotwave.io"
         - name: GITHUB_API_TOKEN
           valueFrom:
             secretKeyRef:
