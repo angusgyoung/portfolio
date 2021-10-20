@@ -3,14 +3,14 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Update base resources
+name: Apply base resources
 
 on:
   workflow_dispatch:
   push:
     branches: ['main']
     paths:
-      - 'k8s/base/**'
+      - 'k8s/resources/**'
 
 env:
   K8S_CLUSTER: k8s-1-21-3-do-0-lon1-1634243075945
@@ -35,4 +35,4 @@ jobs:
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.K8S_CLUSTER }}
       
       - name: Deploy to DigitalOcean Kubernetes
-        run: kubectl apply -k $GITHUB_WORKSPACE/k8s/base
+        run: kubectl apply -k $GITHUB_WORKSPACE/k8s/resources

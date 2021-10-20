@@ -1,9 +1,4 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Build and deploy client container image
+name: Build and deploy client to Netlify
 
 on:
   workflow_dispatch:
@@ -11,65 +6,25 @@ on:
     branches: ['main']
     paths:
       - 'client/**'
-      - 'k8s/ci/client.yml'
-
-env:
-  REGISTRY: ghcr.io/angusgyoung
-  IMAGE_NAME: portfolio-client
-  K8S_CLUSTER: k8s-1-21-3-do-0-lon1-1634243075945
-  DEPLOYMENT_NAME: deployment/portfolio-client
-  DEPLOYMENT_FILE: ci/client.yml
-
 
 jobs:
-  build-and-deploy-image:
+  build-and-deploy-client:
+    name: Publish to Netlify
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1
 
-      - name: Log in to the Container registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@master
+      
+      - run: npm install
+      - run: npm run build
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+      - name: Deploy production to Netlify
+        uses: South-Paw/action-netlify-deploy@v1.2.0
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=sha,enable=true,suffix=,format=short
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-        with:
-          context: client
-          build-args: |
-            VUE_APP_SERVICE_URL=https://api.dotwave.io/api/v1/pf
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-      
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      
-      - name: Update deployment file
-        run: TAG=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }} && sed -i 's|imageTag|'${TAG}'|' $GITHUB_WORKSPACE/k8s/${{ env.DEPLOYMENT_FILE }}
-      
-      - name: Save kubeconfig
-        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.K8S_CLUSTER }}
-      
-      - name: Deploy to Kubernetes
-        run: kubectl apply -f $GITHUB_WORKSPACE/k8s/${{ env.DEPLOYMENT_FILE }}
-
-      - name: Verify deployment
-        run: kubectl -n portfolio rollout status ${{ env.DEPLOYMENT_NAME }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          netlify-site-id: ${{ secrets.NETLIFY_SITE_ID }}
+          build-dir: './client/dist'
+          comment-on-commit: true

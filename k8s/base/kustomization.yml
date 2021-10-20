@@ -1,5 +1,0 @@
-resources:
-  - namespace.yml
-  - ingress.yml
-  - autoscaling.yml
-  - services.yml

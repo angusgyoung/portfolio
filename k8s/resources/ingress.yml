@@ -9,7 +9,6 @@ spec:
   tls:
   - hosts:
     - api.dotwave.io
-    - angus.dotwave.io
     secretName: tls
   rules:
   - host: api.dotwave.io
@@ -20,15 +19,5 @@ spec:
         backend:
           service:
             name: portfolio-api-service
-            port:
-              number: 80
-  - host: angus.dotwave.io
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: portfolio-client-service
             port:
               number: 80
