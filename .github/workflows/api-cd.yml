@@ -10,15 +10,15 @@ on:
   push:
     branches: ['main']
     paths:
-      - 'service/**'
-      - 'k8s/deployments/service.yml'      
+      - 'api/**'
+      - 'k8s/deployments/api.yml'      
 
 env:
   REGISTRY: ghcr.io/angusgyoung
-  IMAGE_NAME: portfolio-service
+  IMAGE_NAME: portfolio-api
   K8S_CLUSTER: k8s-1-21-3-do-0-lon1-1634243075945
   DEPLOYMENT_NAME: deployment/portfolio-api
-  DEPLOYMENT_FILE: deployments/service.yml
+  DEPLOYMENT_FILE: deployments/api.yml
 
 jobs:
    build-and-deploy-image:
@@ -53,6 +53,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            version=${{ steps.meta.outputs.tags }}
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
