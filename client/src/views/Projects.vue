@@ -1,31 +1,18 @@
 <template>
-  <b-container>
-    <div v-if="loading" class="d-flex justify-content-center mt-5">
-      <b-icon
-        icon="circle-fill"
-        animation="throb"
-        font-scale="2"
-        variant="primary"
-      ></b-icon>
-    </div>
-    <div v-else>
-      <h2>Pinned</h2>
-      <repository
-        class="mb-3"
-        v-for="repo in pinned"
-        :key="repo.url"
-        :repo="repo"
-      />
-
-      <h2>Recent</h2>
-      <repository
-        class="mb-3"
-        v-for="repo in recent"
-        :key="repo.url"
-        :repo="repo"
-      />
-    </div>
-  </b-container>
+  <div>
+    <repository
+      :class="'mb-3 ' + (index % 2 == 0 ? 'filled' : '')"
+      v-for="(repo, index) in pinned"
+      :key="repo.url"
+      :repo="repo"
+    />
+    <repository
+      :class="'mb-3 ' + (index % 2 == 0 ? 'filled' : '')"
+      v-for="(repo, index) in recent"
+      :key="repo.url"
+      :repo="repo"
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -40,15 +27,21 @@ import { getProjects } from '../services/api'
   }
 })
 export default class Projects extends Vue {
-  private pinned!: Repo[]
-  private recent!: Repo[]
-  private loading = true
+  private pinned: Repo[] = []
+  private recent: Repo[] = []
 
   async created(): Promise<void> {
     const user = await getProjects()
     this.pinned = user.pinnedItems.nodes
     this.recent = user.repositoriesContributedTo.nodes
-    this.loading = false
   }
 }
 </script>
+
+<style lang="scss">
+@import '../main.scss';
+
+.filled {
+  background-color: $off-white;
+}
+</style>

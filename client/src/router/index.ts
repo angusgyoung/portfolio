@@ -24,4 +24,10 @@ const router = new VueRouter({
   routes
 })
 
+router.afterEach((to, from) => {
+  Vue.nextTick(() => {
+    document.title = 'Angus Young'
+  })
+})
+
 export default router

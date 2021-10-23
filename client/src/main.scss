@@ -6,32 +6,25 @@ $font-size-base: 1.2rem !default;
 $font-size-lg: $font-size-base * 1.25 !default;
 $font-size-sm: $font-size-base * .875 !default;
 
-$border-width:                1px !default;
+$border-width: 1px !default;
 
-$border-radius:               0 !default;
-$border-radius-lg:            0 !default;
-$border-radius-sm:            0 !default;
+$border-radius: 0 !default;
+$border-radius-lg: 0 !default;
+$border-radius-sm: 0 !default;
 
+$white: #f9fafe;
+$off-white: #f3f4f9;
 $dark-blue: #020126;
-$navy: #042159;
+$navy: #031b4d;
 $purple: #c637ff;
 $yellow: #F2E422;
 $orange: #F28A2E;
-$red: #F23827;
-
-//$primary:   
-// $secondary:    
-// $success:      
+$red: #a38380;
+      
 $info: $purple;        
 $warning: $orange;
 $danger: $red;      
-// $light:        
-$dark: $dark-blue;
-
-body {
-    background-color: $dark-blue !important;
-    color: white !important;
-}
+$dark: $navy;
 
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
 @import 'node_modules/bootstrap-vue/src/index.scss';

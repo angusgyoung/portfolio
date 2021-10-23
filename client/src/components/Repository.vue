@@ -1,29 +1,30 @@
 <template>
-  <b-card
-    :title="repo.name"
-    :sub-title="repo.primaryLanguage.name"
-    class="repository-card"
-  >
-    <b-card-text>
-      {{ repo.description }}
-    </b-card-text>
-    <b-row>
-      <div v-if="topics && topics.length">
+  <b-container class="p-5" fluid>
+    <b-container>
+      <b-row align-h="between">
         <b-col>
-          <b-badge
-            class="mr-2"
-            v-for="topic in topics"
-            :key="topic.name"
-            pill
-            variant="primary"
-            >{{ topic.topic.name }}</b-badge
-          >
+          <h2>{{ repo.name }}</h2>
+          <h5 class="text-muted">
+            Last updated
+            {{
+              new Date(repo.updatedAt).toLocaleDateString('en-gb', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })
+            }}
+          </h5>
         </b-col>
-      </div>
-      <div v-if="languages && languages.length">
+      </b-row>
+      <b-row>
         <b-col>
+          <p>{{ repo.description }}</p>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col v-if="languages.length > 0">
           <b-badge
-            class="mr-2"
+            class="mr-1"
             v-for="language in languages"
             :key="language.name"
             pill
@@ -31,17 +32,32 @@
             >{{ language.name }}</b-badge
           >
         </b-col>
-      </div>
-      <b-col>
-        <b-button
-          class="btn-sm float-right"
-          :href="repo.url"
-          variant="outline-info"
-          >View on Github <b-icon icon="github"
-        /></b-button>
-      </b-col>
-    </b-row>
-  </b-card>
+      </b-row>
+      <b-row>
+        <b-col v-if="topics.length > 0">
+          <b-badge
+            class="mr-1"
+            v-for="topic in topics"
+            :key="topic.name"
+            pill
+            variant="primary"
+            >{{ topic.topic.name }}</b-badge
+          >
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <b-button
+            class="mt-1"
+            size="sm"
+            :href="repo.url"
+            variant="outline-info"
+            >View on GitHub <b-icon icon="github" />
+          </b-button>
+        </b-col>
+      </b-row>
+    </b-container>
+  </b-container>
 </template>
 
 <script lang="ts">
@@ -64,11 +80,3 @@ export default class Repository extends Vue {
   }
 }
 </script>
-
-<style lang="scss">
-@import '../main.scss';
-
-.repository-card {
-  background-color: $navy;
-}
-</style>
