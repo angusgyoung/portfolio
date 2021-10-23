@@ -11,6 +11,10 @@ jobs:
   build-and-deploy-client:
     name: Publish to Netlify
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v1
@@ -18,7 +22,10 @@ jobs:
       - uses: actions/setup-node@master
       
       - run: npm install
+        working-directory: client
+
       - run: npm run build
+        working-directory: client
 
       - name: Deploy production to Netlify
         uses: South-Paw/action-netlify-deploy@v1.2.0
