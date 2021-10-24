@@ -25,6 +25,8 @@ jobs:
         working-directory: client
 
       - run: npm run build
+        env:
+          VUE_APP_SERVICE_URL: https://api.dotwave.io/api/v1/pf
         working-directory: client
 
       - name: Deploy production to Netlify
