@@ -27,13 +27,13 @@ import { getProjects } from '../services/api'
   }
 })
 export default class Projects extends Vue {
-  private pinned: Repo[] = []
-  private recent: Repo[] = []
+  private pinned?: Repo[] = []
+  private recent?: Repo[] = []
 
   async created(): Promise<void> {
     const user = await getProjects()
-    this.pinned = user.pinnedItems.nodes
-    this.recent = user.repositoriesContributedTo.nodes
+    this.pinned = user?.pinnedItems?.nodes
+    this.recent = user?.repositoriesContributedTo?.nodes
   }
 }
 </script>

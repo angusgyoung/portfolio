@@ -1,12 +1,12 @@
 export interface Organisation {
-  avatarUrl: string
-  login: string
-  name: string
-  url: string
+  avatarUrl?: string
+  login?: string
+  name?: string
+  url?: string
 }
 
 export interface Organizations {
-  nodes: Organisation[]
+  nodes?: Organisation[]
 }
 
 export interface Language {
@@ -72,17 +72,17 @@ export interface Repositories {
 }
 
 export interface User {
-  name: string
-  login: string
-  avatarUrl: string
-  bio: string
+  name?: string
+  login?: string
+  avatarUrl?: string
+  bio?: string
   company?: string
-  isHireable: boolean
-  url: string
-  organizations: Organizations
-  publicKeys: PublicKeys
-  repositoriesContributedTo: Repositories
-  pinnedItems: PinnedItems
+  isHireable?: boolean
+  url?: string
+  organizations?: Organizations
+  publicKeys?: PublicKeys
+  repositoriesContributedTo?: Repositories
+  pinnedItems?: PinnedItems
 }
 
 export interface Data {

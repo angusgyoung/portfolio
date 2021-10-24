@@ -63,13 +63,14 @@ import { getUser } from '../services/api'
   components: {}
 })
 export default class Home extends Vue {
-  private user!: User = {}
-  private organisations!: Organisation[] = []
+  private user = {} as User
+  private organisations = [] as Organisation[]
 
   async created(): Promise<void> {
     this.user = await getUser()
 
-    this.organisations = this.user.organizations.nodes
+    if (this.user.organizations?.nodes)
+      this.organisations = this.user?.organizations?.nodes
   }
 
   hireMessage(): string {
