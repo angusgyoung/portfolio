@@ -71,12 +71,14 @@ export default class Repository extends Vue {
   @Prop({ default: {} })
   repo!: Repo
 
-  private topics!: Topic[]
-  private languages!: Language[]
+  private topics = [] as Topic[]
+  private languages = [] as Language[]
 
   created(): void {
-    this.topics = this.repo.repositoryTopics.nodes
-    this.languages = this.repo.languages.nodes
+    if (this.repo.repositoryTopics?.nodes)
+      this.topics = this.repo.repositoryTopics.nodes
+
+    if (this.repo.languages?.nodes) this.languages = this.repo.languages?.nodes
   }
 }
 </script>

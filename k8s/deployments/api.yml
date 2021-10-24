@@ -16,7 +16,7 @@ spec:
         app: portfolio-api
     spec:
       containers:
-      - name: portfolio-api-service
+      - name: portfolio-api
         image: ghcr.io/angusgyoung/portfolio-api:imageTag
         env:
         - name: GIN_MODE
@@ -28,7 +28,7 @@ spec:
         - name: CACHE_TTL
           value: "3600"
         - name: CACHE_TIMEOUT
-          value: "2"
+          value: "1"
         - name: CORS_ALLOW_ORIGIN
           value: "https://angus.dotwave.io"
         - name: GITHUB_API_TOKEN

@@ -2,13 +2,7 @@
   <div>
     <repository
       :class="'mb-3 ' + (index % 2 == 0 ? 'filled' : '')"
-      v-for="(repo, index) in pinned"
-      :key="repo.url"
-      :repo="repo"
-    />
-    <repository
-      :class="'mb-3 ' + (index % 2 == 0 ? 'filled' : '')"
-      v-for="(repo, index) in recent"
+      v-for="(repo, index) in repositories"
       :key="repo.url"
       :repo="repo"
     />
@@ -27,13 +21,27 @@ import { getProjects } from '../services/api'
   }
 })
 export default class Projects extends Vue {
-  private pinned?: Repo[] = []
-  private recent?: Repo[] = []
+  private repositories = [] as Repo[]
 
   async created(): Promise<void> {
     const user = await getProjects()
-    this.pinned = user?.pinnedItems?.nodes
-    this.recent = user?.repositoriesContributedTo?.nodes
+
+    if (user?.pinnedItems?.nodes) {
+      this.repositories = this.repositories.concat(
+        user.pinnedItems.nodes.map(
+          (repositoryEdge) => repositoryEdge.repository
+        )
+      )
+    }
+
+    // add repositories contributed to, excluding pinned
+    if (user?.repositoriesContributedTo?.nodes) {
+      this.repositories = this.repositories.concat(
+        user.repositoriesContributedTo.nodes
+          .map((repositoryEdge) => repositoryEdge.repository)
+          .filter((repo) => !this.repositories.some((r) => r.url === repo.url))
+      )
+    }
   }
 }
 </script>

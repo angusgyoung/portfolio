@@ -33,15 +33,19 @@ func Init() {
 		cacheTimeout, _ = strconv.Atoi(CACHE_TIMEOUT)
 	}
 
-	cache = redis.NewClient(&redis.Options{
+	options := &redis.Options{
 		Addr:     cacheUrl,
 		Password: "",
 		DB:       0,
 		DialTimeout: toSecondDuration(cacheTimeout),
-		WriteTimeout: toSecondDuration(cacheTimeout),
 		ReadTimeout: toSecondDuration(cacheTimeout),
+		MaxRetries: -1,
 		OnConnect: onConnect,
-	})
+	}
+
+	log.WithField("options", options).Trace("Creating Redis client")
+
+	cache = redis.NewClient(options)
 }
 
 func PerformCacheableServiceCall(c *gin.Context, retrieveCallback func() (interface{}, error), cacheKey string) {

@@ -52,23 +52,27 @@ export interface PrimaryLanguage {
 }
 
 export interface Repository {
-  name: string
+  name?: string
   description?: string
-  url: string
-  updatedAt: Date
-  repositoryTopics: RepositoryTopics
-  stargazerCount: number
-  releases: Releases
-  primaryLanguage: PrimaryLanguage
-  languages: Languages
+  url?: string
+  updatedAt?: Date
+  repositoryTopics?: RepositoryTopics
+  stargazerCount?: number
+  releases?: Releases
+  primaryLanguage?: PrimaryLanguage
+  languages?: Languages
+}
+
+export interface RepositoryEdge {
+  repository: Repository
 }
 
 export interface PinnedItems {
-  nodes: Repository[]
+  nodes?: RepositoryEdge[]
 }
 
 export interface Repositories {
-  nodes: Repository[]
+  nodes?: RepositoryEdge[]
 }
 
 export interface User {
@@ -86,9 +90,9 @@ export interface User {
 }
 
 export interface Data {
-  user: User
+  user?: User
 }
 
 export interface RootObject {
-  data: Data
+  data?: Data
 }

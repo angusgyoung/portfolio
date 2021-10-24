@@ -4,46 +4,40 @@ import (
 	"context"
 	"os"
 
-	"github.com/machinebox/graphql"
+	"github.com/hasura/go-graphql-client"
 	log "github.com/sirupsen/logrus"
+	"golang.org/x/oauth2"
 )
 
 var apiUrl = os.Getenv("GITHUB_API_URL")
 var apiToken = os.Getenv("GITHUB_API_TOKEN")
 
-var client graphql.Client = *graphql.NewClient(apiUrl)
+var src = oauth2.StaticTokenSource(
+	&oauth2.Token{
+		AccessToken: apiToken,
+		TokenType:   "Bearer",
+	},
+)
+
+var httpClient = oauth2.NewClient(context.Background(), src)
+var client graphql.Client = *graphql.NewClient(apiUrl, httpClient)
+
 
 func GetProfileData() (interface{}, error) {
-    request := createRequest(userDataQuery)
-	return executeRequest(*request)
+    return performRequest(&userDataQuery)
 }
 
 func GetProjectData() (interface{}, error) {
-    request := createRequest(projectDataQuery)
-	return executeRequest(*request)
+    return performRequest(&projectDataQuery)
 }
 
-func executeRequest(request graphql.Request) (interface{}, error) {
-	var response interface{}
-    
-	err := client.Run(context.Background(), &request, &response)
-
-	if err != nil {
-        log.WithError(err).Error("Failed to perform github request")
-		return nil, err
-    }
-    
-	log.Trace(response)
-	return response, nil
+func performRequest(q interface{}) (interface{}, error) {
+	err := client.Query(context.Background(), q, nil)
+	log.WithFields(log.Fields{
+		"err": err,
+		"response": q,
+	}).Trace("Executed query")
+	return q, err
 }
 
-func createRequest(query string) *graphql.Request {
-	request := graphql.NewRequest(query)
-
-	log.Trace(request)
-
-	request.Header.Add("Authorization", "Bearer " + apiToken)
-
-	return request
-}
 
