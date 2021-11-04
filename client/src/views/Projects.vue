@@ -1,7 +1,7 @@
 <template>
   <div>
     <repository
-      :class="'mb-3 ' + (index % 2 == 0 ? 'filled' : '')"
+      :class="'mb-3 ' + (index % 2 == 0 ? 'cutout' : '')"
       v-for="(repo, index) in repositories"
       :key="repo.url"
       :repo="repo"
@@ -48,8 +48,4 @@ export default class Projects extends Vue {
 
 <style lang="scss">
 @import '../main.scss';
-
-.filled {
-  background-color: $off-white;
-}
 </style>

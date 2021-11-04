@@ -1,10 +1,10 @@
-$font-family-sans-serif: "Open Sans";
-$font-family-monospace: "Roboto Mono";
+$font-family-sans-serif: 'Open Sans';
+$font-family-monospace: 'Roboto Mono';
 $font-family-base: $font-family-sans-serif !default;
 
 $font-size-base: 1.2rem !default;
 $font-size-lg: $font-size-base * 1.25 !default;
-$font-size-sm: $font-size-base * .875 !default;
+$font-size-sm: $font-size-base * 0.875 !default;
 
 $border-width: 1px !default;
 
@@ -17,14 +17,16 @@ $off-white: #f3f4f9;
 $dark-blue: #020126;
 $navy: #031b4d;
 $purple: #c637ff;
-$yellow: #F2E422;
-$orange: #F28A2E;
+$yellow: #f2e422;
+$orange: #f28a2e;
 $red: #a38380;
-      
-$info: $purple;        
+$dark-grey: #242424;
+
+$info: $purple;
 $warning: $orange;
-$danger: $red;      
+$danger: $red;
 $dark: $navy;
+
 
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
 @import 'node_modules/bootstrap-vue/src/index.scss';
